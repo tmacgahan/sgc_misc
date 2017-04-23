@@ -79,4 +79,49 @@ this meant to be a service?  Or an application?  Or both?  My guess would be
 both.
 
 \subsection{Proposed Solution}
-etc
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.4]{images/DocumentManagementSystem.pdf}
+	\end{center}
+	\caption{High Level DMS Architecture}
+	\label{fig:dmsArch}
+\end{figure}
+
+An overall solution would involve three main components:
+\begin{itemize}
+	\item a client application running on a user's laptop, desktop or other
+		device in a JVM
+	\item an sql document tracker running on a unix-compliant server.
+	\item a document server running on a unix-compliant server.
+\end{itemize}
+
+\paragraph{Client Application}The client application would be the main view
+into the system.  This would offer an interface for secure authentication, to
+be validated by the SQL server and probably some layer on top of
+it\footnote{what existing authentication solutions exist?}.  The function of
+this application would be to display images retrieved by the rest of the
+system, and to apply annotations correctly within the application to the user.
+
+\paragraph{SQL Document Tracker}The document tracker would resolve which
+documents are associated with which cases, and what access levels are
+appropriate for each authenticated user given their enrollment in the system.
+Once this document list is resolved, it can be sent to the document server,
+which in turn will actually retrieve and transmit the documents to the client
+application.
+
+\paragraph{Document Management System}This subsystem will actually control the
+documents, their annotations, and redaction deltas.  Given a list of documents,
+it would apply redactions to images directly prior to sending, then pair the
+resulting image with any annotations.  This process would be repeated for all
+documents in the list, bundled together, and sent back to the requesting
+client.
+
+\paragraph{On second thought}Probably the jvm app would want to talk to the DMS
+directly, and the DMS would talk to the SQL server.  It doesn't make any sense
+for the DMS to trust the client app's word that the list it got was appropriate
+for the authenticated user's access level.
+
+\paragraph{Communications}It is in general possible to accomplish all said
+communication with json-based rest calls.  For image data, byte streams are
+allowed, although we would probably want to do something like base-64 encoding
+to return the image data.
