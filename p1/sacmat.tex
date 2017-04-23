@@ -1,0 +1,115 @@
+\documentclass{sig-alternate-05-2015}
+
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{algorithm}
+\usepackage[noend]{algorithmic}
+\usepackage{xspace}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{mdframed}
+
+\lstset{language=C,showspaces=false,captionpos=b}
+
+\setlist[enumerate]{label*=\arabic*.}
+
+\begin{document}
+
+% Copyright
+\setcopyright{acmcopyright}
+\CopyrightYear{2017}
+%\setcopyright{rightsretained}
+\conferenceinfo{SACMAT'17}{June 21-23, 2017, Indianapolis, Indiana, United States}
+%\isbn{978-1-4503-3802-8/16/06}
+
+\title{Provable Enforcement of HIPAA-Compliant Release of Medical Records Using the History Aware Programming Language}
+
+\numberofauthors{5}
+%\author{
+%% 1st. author
+%\alignauthor Thomas MacGahan\\
+%       \affaddr{University of Texas at San Antonio}\\
+%       \affaddr{thomas.macgahan@gmail.com}\\
+%% 2nd. author
+%\alignauthor Claiborne Johnson\\
+%       \affaddr{University of Texas at San Antonio}\\
+%       \affaddr{imm589@my.utsa.edu}\\
+%% 3rd. author
+%\alignauthor Armando Rodriguez\\
+%       \affaddr{University of Texas at San Antonio}\\
+%       \affaddr{armando.rodriguez@utsa.edu}\\
+%\and
+%% 4th. author
+%\alignauthor Jeffery von Ronne\\
+%       \affaddr{Google Inc.}\\
+%       \affaddr{vonronne@acm.org}\\
+%% 5th. author
+%\alignauthor Jianwei Niu\\
+%       \affaddr{University of Texas at San Antonio}\\
+%       \affaddr{jianwei.niu@utsa.edu}\\
+%}
+
+\maketitle
+
+%  Use this command to print the description
+\printccsdesc
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\scriptsize,          % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=none,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{black},      % keyword style
+  language=Octave,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+
+\begin{abstract}
+Dependence on reliable information systems to safeguard personally identifiable
+information implies a need for privacy policies which guide the release and
+management of such information, whose mismanaged disclosure can be damaging to
+both the subject and the organization that releases it.  Enforcing such
+policies requires attention to detail and care, and thus any aid that a
+compiler can render may be of value.  We present a demonstration of compiler
+enforcement of privacy policy by implementation of the History Aware Programming
+Language (HAPL) framework.  This framework allows expression of arbitrary HAPL code
+for actors in an actor system to be used to back a web application.  This code is
+then checked for compliance with privacy policies described in assume-guarantee
+form before being assembled into a functioning application.  The framework is
+demonstrated by implementing five use cases based on scenarios described in the
+Health Insurance Portability and Accountability Act (HIPAA), and the performance
+of the framework is tested.
+%\keywords{privacy policy; assume-guarantee specifications; static analysis; scala; web applications}
+\end{abstract}
+
+%\input{introduction}
+%\input{foundations}
+%\input{architecture}
+%\input{framework}
+%\input{implementation}
+%\input{examples}
+%\input{conclusion}
+section{main} hell world!
+
+%\bibliographystyle{abbrv}
+%\bibliography{sacmat,actors,CCS11,proposal}
+
+\end{document}

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+pdflatex sacmat
+if [ $? != 0 ] ; then echo "latex round 1 failed failed!" ; exit 1 ; fi
+
+bibtex sacmat
+if [ $? != 0 ] ; then echo "bibtex round 1 failed!" ; exit 1 ; fi
+
+pdflatex sacmat
+if [ $? != 0 ] ; then echo "latex round 2 failed!" ; exit 1 ; fi
+
+bibtex sacmat
+if [ $? != 0 ] ; then echo "bibtex round 2 failed!" ; exit 1 ; fi
+
+pdflatex sacmat
+if [ $? != 0 ] ; then echo "latex round 3 failed!" ; exit 1 ; fi
+
+open sacmat.pdf
