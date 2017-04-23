@@ -78,7 +78,7 @@ mean how, can you really do worse than MS Outlook?
 this meant to be a service?  Or an application?  Or both?  My guess would be
 both.
 
-\subsection{Proposed Solution}
+\subsection{Solution Overview}
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[scale=0.4]{images/DocumentManagementSystem.pdf}
@@ -125,3 +125,72 @@ for the authenticated user's access level.
 communication with json-based rest calls.  For image data, byte streams are
 allowed, although we would probably want to do something like base-64 encoding
 to return the image data.
+
+\subsection{DMS Architecture}
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.4]{images/DMSInternal.pdf}
+	\end{center}
+	\caption{DMS API Architecture}
+	\label{fig:dmsArch}
+\end{figure}
+
+\paragraph{Document Read}The DMS API would be divided into several
+components.  There would be an SQL server that tracks image, redaction, and
+annotation files, and remembers which access levels are associated with those
+files.  It would respond to requests from the DMI API with document lists
+corresponding to the authentication level of a particular user.
+
+The API would then take that file list and use the descriptors in it to
+retrieve the appropriate files.  These will then be stored in internal memory,
+and a module, the redactor, would apply redactions to the images.  The API
+would then bundle the redacted image with the annotations, and reply to the
+client's initial request.
+
+\paragraph{Document Write}The DMS API in the case of a write request would
+verify authentication.  If authentication passes, any new documents along with
+redaction deltas would be stored at the requestor's access level for later
+processing, and appropriate entry would be made in the database.
+
+\paragraph{Document Update}Since this is an authenticated system, and no need
+for storage of document history was specified, an update would simply be a
+write with new state.  However, since there is a redactor service in place,
+this would be a convenient module in which to apply deltas and so restore a
+specific state, if document history retrieval is a desired feature.
+
+\subsection{Feasibility}
+Overall, this architecture is emminently implementable with any of the jvm
+languages.  Jvm languages would be suitable for both client application and API
+implementation.  Off-the-shelf SQL servers, such as PostgreSQL can handle
+substantially more traffic than a courthouse is likely to receive, and such
+database technologies are industry standard with robust track records of
+performance and reliability, as well as many experts able to develop for them
+and service them.
+
+In general, the primary point of concern is an authentication system, which is
+under-specified here.  It is likely that communicating over TLS and using
+techniques such as nonces would provide security adequate for the confidential
+nature of the information in this system, however a detailed review of this is
+advised.  Nevertheless, there is nothing in the requirements that falls outside
+the applicability of tried and tested security techniques.
+
+\subsection{Resources} Resources required for the implementation of this system
+are likely to be itemized as follows:
+
+\paragraph{Expertise}
+\begin{itemize}
+	\item Client application: 1 - 2 mid to senior level programmers skilled
+		with JVM languages and frontend development.
+	\item DMS API: 1 - 2 mid to senior level programmers skilled with JVM
+		languages and API development.
+	\item PostgreSQL: 1 mid to senior level DBA with experience in
+		PostgreSQL.
+	\item Security: 1 senior level developer with a focus in security.
+	\item Coordination and leadership: 1 senior level JVM language expert
+		with experience in image processing.  This should suffice for
+		coordination and implementation of the redactor module.
+\end{itemize}
+
+\paragraph{Timeframe}
+With the crew listed above, I would expect this subsystem to be implementable
+within 3-6 months.
