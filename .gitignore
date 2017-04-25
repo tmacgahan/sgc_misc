@@ -2,3 +2,13 @@
 *.bbl
 *.blg
 *.log
+*.cut
+prop@gen@acronym
+*.out
+*.pdata
+*.pdf
+proposal.run.xml
+*.toc
+*.bib
+.DS_Store
+*.swp
