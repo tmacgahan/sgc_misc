@@ -1,1 +1,109 @@
 \section{Electronic Filing Portal and Electronic Filing Fee Payment System}
+\subsection{notes}
+
+Pre-existing methods of accepting payments online:
+\begin{itemize}
+	\item PayPal offers an integration for websites
+	\item Paysimple is a package that I know little about: https://paysimple.com/
+	\item https://www.2checkout.com/
+	\item there are certainly others
+\end{itemize}
+
+My intuition is that PayPal is going to be the most robust online payments
+system.  There's an API that I don't fully understand, but assuming we can get
+a token from it that says that a payment has been processed, then we can
+associate that with the payment that was made, put it in the db, and do what we
+like with it.  So in one sense, we can view the database as the interface with
+the rest of the system.  Probably we want to keep the payments db isolated from
+the rest of the system.
+
+There are api sandboxes for testing api integration with the system.
+
+From our perspective: there are multiple oppotunities for terrible liabilities
+if we implement our own financial system.  Definitely outsource this.
+
+\paragraph{Stated requirements} ``The Contractor shall provide a Financial
+Management System which includes robust accounting functionality, to include:
+an electronic fee payment system that is fully-integrated with the general
+ledger, comprehensive transactional audit trail functionality, agile
+calculation structures, full receipting, sophisticated debits and credits
+reporting functionality, including established state-financial reporting
+structures, whereby all payments and disbursements are auto-related into the
+case ledger, in real time."
+
+Thus, there is:
+\begin{itemize}
+	\item Financial transaction processing
+	\item A general ledger
+	\item Audit log
+	\item Calculation system (assuming this means accounting software)
+	\item Receipting (this is most certainly handled by paypal)
+	\item State-financial accounting practices unification
+	\item Rules for relating payments and disbursements in the ledger
+\end{itemize}
+
+\subsection{Rough design}
+So it appears that there's 3 basic layers to this.
+
+There's an interface with whatever payments system we end up using.  Whatever
+that payment system doesn't really matter.  The idea is to make sure there is
+some system that is unified with a database that is a canonical record of
+transactions.  The mission of this system should be to answer the question "Was
+this payment processed in this amount at this time" with perfect correctness
+with respect to actual money that changed hands.  This system should be a
+ledger system only.  It should expose a read-only authenticated API for reading
+transaction data.  This transaction data should then be replicated to a
+secondary system.  This replication should be secure and one-way.  Once
+replicated at the target system, this target system would consitute the basis
+for the financial application component of the overall delivered system.
+
+This second layer would then contain all the services for calculation, display
+of ledger, unification of state financial accounting practices, rules for
+relating payments and suchlike.  The mission of this component should be to
+unify the transaction data from primary to the model that is expected for
+end-user interaction where the end-user is the accountant or other financial
+administrator or authorized employee.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.4]{images/FinancialSystem.pdf}
+	\end{center}
+	\caption{High Level DMS Financial System Architecture}
+	\label{fig:fsArch}
+\end{figure}
+
+\subsection{Design elaboration}
+Referring to figure \ref{fig:fsArch}, we see a number of components.
+
+\paragraph{Buyer / Fee Payer} this denotes the consumer of the system that will
+pay fees to the client.  This layer need not be a direct interaction with the
+API, but may encompass a web page that interacts with the API, or a desktop
+application on a dedicated terminal, or even a mobile application.
+
+\paragraph{Internal Payment API} \textit{this is probably badly named.}  Even
+so, this is the API that processes intention to pay a fee.  It is held to be in
+communication with some external payment processing system.  It also
+communicates directly with the canonical transaction database.  Its job is to
+dispatch intention to pay a fee to the external payment processing system,
+which in turn will reply with evidence that a payment has been processed.  If
+this payment has been processed, then the canonical transaction database is
+notified.
+
+\paragraph{Canonical Transaction Database}  This is considered to be the master
+authority on whether or not a transaction has taken place.  It is to store
+\textbf{only} transaction records.  Once written, no record is \textbf{ever} to
+be removed.  Any updates, fixups, or retractions must be entered as a separate
+transaction.  Rows must all be double entry, indicating a quantity removed from
+an account for every quantity deposited to an account, and these quantities
+must always match.  If there is a mistake recorded in this database, it is to
+\textbf{remain} and be corrected with an updating transaction.  It will respond
+to no requests for any of its data, except for the two databases that are to
+replicate it.
+
+\paragraph{Mirror Transaction Database} todo: write me!
+
+\paragraph{Ledger Application Database} todo: write me!
+
+\paragraph{Ledger Application} todo: write me!
+
+\paragraph{Financial Administrator or Authorized Employee} todo: write me!
