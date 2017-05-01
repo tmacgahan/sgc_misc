@@ -100,10 +100,40 @@ must always match.  If there is a mistake recorded in this database, it is to
 to no requests for any of its data, except for the two databases that are to
 replicate it.
 
-\paragraph{Mirror Transaction Database} todo: write me!
+\paragraph{Mirror Transaction Database} This database is entirely for backing
+up the canonical database.  If necessary or desired, this can be used to feed a
+data warehouse.  It only reads from the canonical database, it cannot push to
+it.
 
-\paragraph{Ledger Application Database} todo: write me!
+\paragraph{Ledger Application Database} This database will mirror the canonical
+database.  However, it will also contain other tables for use in the ledger
+application, and will ensure that relations are correctly updated for the
+purposes of the ledger application.
 
-\paragraph{Ledger Application} todo: write me!
+\paragraph{Ledger Application} The ledger application will provide the
+functionality required by accountants or other employees.  Here, you will need
+a data scientist to appropriately design all the required functionality for
+state law compliance and so forth.  This is an API, and may be interacted with
+by website, dedicated terminal, pc application or mobile application, as
+required.
 
-\paragraph{Financial Administrator or Authorized Employee} todo: write me!
+\paragraph{Financial Administrator or Authorized Employee} This is the final
+end in the role of employee of the client.
+
+\subsection{Resources}
+We estimate resources required for implementation to be in the range of the
+following:
+
+\begin{itemize}
+	\item Payment API, transaction database, mirror database and external
+	payment system integrations should be coverable by 2 senior level
+	programmers in the space of 3-6 months.
+	\item Ledger application database, ledger api should be coverable by 2
+	senior level programmers, or 1 senior level programmer and one data
+	scientist in the space of 3-6 months.
+	\item Web application interface for buyer should require 1-2 mid level
+	programmers, in the space of 3-6 months.
+	\item Ledger application would require 1 senior level and 1-2 mid level
+	programmers in the space of 6-12 months.  This is expected to be
+	involved.
+\end{itemize}
